@@ -1,0 +1,97 @@
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+    CURLOPT_URL => "https://recipe-by-api-ninjas.p.rapidapi.com/v1/recipe?query=italian%20wedding%20soup",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_HTTPHEADER => [
+        "X-RapidAPI-Host: recipe-by-api-ninjas.p.rapidapi.com",
+        "X-RapidAPI-Key: 9dfcfc4494mshca9a9b11597745ap110b0bjsn4db106d24473"
+    ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+    echo "cURL Error #:" . $err;
+} else {
+    // Echo the JSON response for debugging purposes
+    // echo $response;
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: white;
+            color: black;
+            text-align: center;
+            padding: 10px;
+        }
+
+         pre {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+			 font-family:sans-serif;
+            margin: 20px auto;
+            max-width: 800px;
+            overflow-x: auto;
+            border-radius: 5px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+        }
+
+
+        pre::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        pre::-webkit-scrollbar-thumb {
+            background-color: #007BFF;
+            border-radius: 5px;
+        }
+
+        pre::-webkit-scrollbar-track {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Recipe Data</h1>
+        <pre id="recipeData"></pre>
+
+        <script>
+            // Your JSON data as a JavaScript object
+                     // Your JSON data as a JavaScript object
+        var jsonData = <?php echo json_encode(json_decode($response), JSON_PRETTY_PRINT); ?>;
+
+        // Convert the JavaScript object to a formatted JSON string
+        var formattedJson = JSON.stringify(jsonData, null, 2);
+
+        // Display the formatted JSON data in the "recipeData" element
+        document.getElementById('recipeData').textContent = formattedJson;
+
+        </script>
+    </body>
+    </html>
+    <?php
+}
+?>
